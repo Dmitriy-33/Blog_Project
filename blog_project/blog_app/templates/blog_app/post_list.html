@@ -1,0 +1,22 @@
+{% extends "blog_app/base.html" %}
+{% block title %}Список постов{% endblock %}
+{% block content %}
+  <h1>Посты</h1>
+  {% for post in posts %}
+    <article>
+      <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+      <p>{{ post.created|date:"d.m.Y H:i" }} — {{ post.author.username }}</p>
+      <p>{{ post.body|truncatewords:30 }}</p>
+    </article>
+  {% empty %}<p>Постов пока нет.</p>{% endfor %}
+
+  <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">← Назад</a>
+    {% endif %}
+    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">Вперёд →</a>
+    {% endif %}
+  </div>
+{% endblock %}
